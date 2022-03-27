@@ -1,36 +1,33 @@
+#Initialisation des imports
 import numpy as np # used for arrays
-
 import gym # pull the environment
-
 import time # to get the time
-
 import math # needed for calculations
 
 env = gym.make("CartPole-v1")
 print(env.action_space.n)
 
+#Initialisation
 LEARNING_RATE = 0.1
-
 DISCOUNT = 0.95
 EPISODES = 60000
 total = 0
 total_reward = 0
 prior_reward = 0
-
 Observation = [30, 30, 50, 50]
 np_array_win_size = np.array([0.25, 0.25, 0.01, 0.1])
-
 epsilon = 1
-
 epsilon_decay_value = 0.99995
 
 q_table = np.random.uniform(low=0, high=1, size=(Observation + [env.action_space.n]))
 q_table.shape
 
+
 def get_discrete_state(state):
     discrete_state = state/np_array_win_size+ np.array([15,10,1,10])
     return tuple(discrete_state.astype(np.int))
 
+#Fonction afin d'initaliser l'épisode 
 def initial_episode():
     t0 = time.time() 
     discrete_state = get_discrete_state(env.reset()) #get the discrete start for the restarted environment 
@@ -98,9 +95,11 @@ def jeu (episode,prior_reward,total,total_reward):
         print("Mean Reward: " + str(mean_reward))
         total_reward = 0
         
+#fonction afin de runer le jeu       
 def run():
     for episode in range (EPISODES +1):
         jeu(episode,prior_reward,total,total_reward)
-        
+#Appel de la fonction      
 run()
+#Fermeture de l'environnement
 env.close()
